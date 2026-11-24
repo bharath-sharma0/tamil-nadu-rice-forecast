@@ -1,0 +1,6 @@
+delay_years,district_years,statistic,value_kg_per_ha,ci_95_lower,ci_95_upper
+2,182,last_available_mae,1035.31,,
+2,182,trailing_average_mae,805.22,,
+3,182,last_available_mae,916.87,,
+3,182,trailing_average_mae,790.18,,
+2,182,mae_improvement_from_trailing_average,230.09,9.33,428.27
