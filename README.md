@@ -25,7 +25,13 @@ MAE is the average absolute forecast error. Both scores use the same 93 observed
 
 The [Power BI project](powerbi/Tamil%20Nadu%20Rice%20Forecast.pbip) has two pages. **District Forecast** shows the eligible yield history, the three seasons behind the forecast, an uncertainty range, and a procurement action. **Model Comparison** shows the held-out MAE and forecast coverage for all five methods. The report runs in Power BI Desktop. The [evaluation summary](reports/final_test_summary.md) is also available directly on GitHub.
 
-![Power BI Model Comparison showing five held-out MAE scores and forecast coverage counts](docs/images/powerbi-model-comparison.png)
+**District Forecast** · Synthetic district data illustrates the slicers, yield history, forecast range, and procurement action.
+
+![Power BI district forecast page with sample yields for a synthetic district](docs/images/powerbi-district-forecast.png)
+
+**Model Comparison** · Actual held-out MAE and forecast coverage from the project evaluation.
+
+![Power BI model comparison with held-out scores for all five models](docs/images/powerbi-model-comparison.png)
 
 ## Architecture
 
