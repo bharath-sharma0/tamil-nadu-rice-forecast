@@ -1,0 +1,6 @@
+method,rows,mae_kg_per_ha,rmse_kg_per_ha,mape_percent,mape_rows
+Last available,180,1012.18,1280.35,1049.50,180
+Trailing average,180,793.29,986.54,449.85,180
+Exponential smoothing,180,822.45,1006.17,468.24,180
+LightGBM history only,180,883.38,1118.01,985.17,180
+LightGBM history + weather,180,946.45,1169.63,748.26,180
