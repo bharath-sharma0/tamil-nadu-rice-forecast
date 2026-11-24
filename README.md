@@ -1,8 +1,8 @@
 # Tamil Nadu Rice Yield Forecast
 
-Forecast district-level Kharif rice yield for September procurement planning, with a reproducible SQLite pipeline and a Streamlit dashboard that explains each forecast.
+Forecast district-level Kharif rice yield for September procurement planning, with a reproducible SQLite pipeline and a Power BI report that explains each forecast.
 
-![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-feature%20pipeline-003B57?logo=sqlite&logoColor=white) ![LightGBM](https://img.shields.io/badge/LightGBM-CPU-347C46) ![Streamlit](https://img.shields.io/badge/Streamlit-local%20demo-FF4B4B?logo=streamlit&logoColor=white)
+![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-feature%20pipeline-003B57?logo=sqlite&logoColor=white) ![LightGBM](https://img.shields.io/badge/LightGBM-CPU-347C46) ![Power BI Desktop](https://img.shields.io/badge/Power%20BI-Desktop-F2C811)
 
 ## Results at a glance
 
@@ -19,11 +19,11 @@ MAE is the average absolute forecast error. Both scores use the same 93 observed
 
 - Joins government crop statistics with NASA POWER temperature and rainfall in SQLite. Each forecast uses weather observations through 31 July and yield history at least two crop years old.
 - Compares two baselines, exponential smoothing, and two LightGBM variants using expanding training windows. The weather ablation compares LightGBM with and without weather on identical rows.
-- Shows the forecast range, the three source seasons, and a procurement action in Streamlit. When eligible history is incomplete, the app asks for a current district estimate before setting a volume target.
+- Shows the forecast range, the three source seasons, and a procurement action in Power BI. When eligible history is incomplete, the app asks for a current district estimate before setting a volume target.
 
-## Dashboard
+## Power BI report
 
-Run the Streamlit app using the [Windows quick start](#quick-start-on-windows). The dashboard shows forecast intervals, eligible yield history, and the held-out model comparison. You can review the [evaluation summary](reports/final_test_summary.md) directly on GitHub.
+The [Power BI project](powerbi/Tamil%20Nadu%20Rice%20Forecast.pbip) has two pages. **District Forecast** shows the eligible yield history, the three seasons behind the forecast, an uncertainty range, and a procurement action. **Model Comparison** shows the held-out MAE and forecast coverage for all five methods. The report runs in Power BI Desktop. The [evaluation summary](reports/final_test_summary.md) is also available directly on GitHub.
 
 ## Architecture
 
@@ -33,7 +33,7 @@ flowchart LR
     B[NASA POWER and district boundaries] --> D
     D --> E[SQL features and cutoff checks]
     E --> F[Walk-forward evaluation]
-    F --> G[Saved results and Streamlit dashboard]
+    F --> G[Saved results and Power BI report]
     D --> G
 ```
 
@@ -41,7 +41,8 @@ flowchart LR
 |---|---|
 | `sql/` | Data quality checks, district joins, time windows, and cutoff audits |
 | `src/` | Input downloads, database rebuild, forecasting, and scoring |
-| `app/` | Streamlit procurement dashboard |
+| `powerbi/` | Power BI report and semantic model definitions |
+| `app/` | Optional Streamlit dashboard |
 | `tests/` | Metric, data-quality, and dashboard tests |
 | `reports/` | Frozen evaluation plan and measured results |
 
@@ -49,7 +50,7 @@ flowchart LR
 
 - **Data and geography** · Python 3.12 loads the DES export and NASA JSON. SQLite stores and joins the data. Shapely picks an interior point for each district.
 - **Forecasting and evaluation** · NumPy prepares model inputs, statsmodels fits exponential smoothing, and LightGBM fits CPU gradient-boosted trees.
-- **Presentation and testing** · Streamlit and Matplotlib show forecasts and history. Python unittest and Streamlit AppTest exercise the pipeline checks and dashboard states.
+- **Presentation and testing** · Power BI Desktop and DAX present forecast scenarios. Python unittest checks metrics and data cutoffs, and AppTest checks the optional Streamlit dashboard.
 
 ## Quick start on Windows
 
@@ -70,10 +71,18 @@ Then run:
 ```powershell
 .\.venv\Scripts\python.exe run_pipeline.py --download-weather
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
-.\.venv\Scripts\python.exe -m streamlit run app/streamlit_app.py
+.\.venv\Scripts\python.exe src/export_powerbi.py
 ```
 
-Open [the local dashboard](http://localhost:8501). No environment variables or API keys are required. The first run downloads missing weather and boundaries, then writes the database and regenerated test CSVs to `data/processed/`. Omit `--download-weather` for an offline rebuild once the inputs are cached.
+The first run downloads missing weather and boundaries, builds SQLite, and regenerates the test CSVs. Omit `--download-weather` for an offline rebuild once the inputs are cached. No API keys are required.
+
+1. Open `powerbi/Tamil Nadu Rice Forecast.pbip` in the free Power BI Desktop app.
+2. Under **Home → Transform data → Edit parameters**, set **CsvFolder** to the absolute path of your checkout's `data/processed/powerbi` folder. Apply the change and select **Refresh**. In Power Query, the same parameter is available under **Manage Parameters**.
+3. Select **Ramanathapuram, 2020** to check the **242.33 kg/ha** forecast. Select **Chengalpattu, 2020** to check the insufficient-history message.
+
+The exported CSVs and Power BI's imported-data cache are local. Before committing changes to the report definitions, reset `CsvFolder` to the generic value `C:\PowerBI\csv`.
+
+To use the optional Streamlit dashboard, run `.\.venv\Scripts\python.exe -m streamlit run app/streamlit_app.py`.
 
 ## Engineering decisions
 

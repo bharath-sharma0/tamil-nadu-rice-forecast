@@ -1,0 +1,22 @@
+model Model
+	culture: en-IN
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["district_forecasts","model_metrics","district_history"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table district_forecasts
+ref table model_metrics
+ref table district_history
+ref table Districts
+
+ref cultureInfo en-IN
+

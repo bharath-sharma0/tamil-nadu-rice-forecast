@@ -1,0 +1,42 @@
+table district_history
+	lineageTag: faf58e87-e1ec-452e-a0ef-d3dfcdd2fa3b
+
+	column district
+		dataType: string
+		lineageTag: 319476f9-27f0-4a49-baf6-17e6de748458
+		summarizeBy: none
+		sourceColumn: district
+
+		annotation SummarizationSetBy = Automatic
+
+	column crop_year
+		dataType: int64
+		formatString: 0
+		lineageTag: 459e4ea0-81a9-4a7b-8d48-8bd8f83067ea
+		summarizeBy: sum
+		sourceColumn: crop_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column observed_yield_kg_ha
+		dataType: double
+		lineageTag: 41464613-c57b-4eab-b45a-6fbd2073eaa6
+		summarizeBy: sum
+		sourceColumn: observed_yield_kg_ha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition district_history = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(CsvFolder & "\district_history.csv"),[Delimiter=",", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"district", type text}, {"crop_year", Int64.Type}, {"observed_yield_kg_ha", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

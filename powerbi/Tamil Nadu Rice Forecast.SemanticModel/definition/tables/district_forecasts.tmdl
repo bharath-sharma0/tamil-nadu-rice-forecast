@@ -1,0 +1,116 @@
+table district_forecasts
+	lineageTag: 4d2f66c6-03d5-42fa-ba4c-1eb60cc2a111
+
+	measure 'Forecast Yield (kg/ha)' = SELECTEDVALUE(district_forecasts[forecast_yield_kg_ha])
+		lineageTag: 1cbf6210-4126-4f2a-8efa-f73f181f2db7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Prediction Range (kg/ha)' =
+			
+			VAR LowerBound = SELECTEDVALUE(district_forecasts[lower_kg_ha])
+			VAR UpperBound = SELECTEDVALUE(district_forecasts[upper_kg_ha])
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        NOT HASONEVALUE(district_forecasts[district])
+			            || NOT HASONEVALUE(district_forecasts[crop_year]),
+			            "Select one district and year",
+			        ISBLANK(LowerBound) || ISBLANK(UpperBound),
+			            "Insufficient history",
+			        FORMAT(LowerBound, "#,##0.00") & " to "
+			            & FORMAT(UpperBound, "#,##0.00")
+			    )
+		lineageTag: c6894be3-be44-4b3d-b886-a1fbbaaed01a
+
+	measure 'Procurement Action' =
+			
+			IF(
+			    HASONEVALUE(district_forecasts[district]) &&
+			    HASONEVALUE(district_forecasts[crop_year]),
+			    IF(
+			        ISBLANK([Forecast Yield (kg/ha)]),
+			        "Request a current district estimate before setting a volume target.",
+			        "Use the forecast range for planning. Confirm harvest area and local supply before committing."
+			    ),
+			    "Select one district and crop year."
+			)
+		lineageTag: 0c831b40-0bb1-40f3-a8de-2bc0046046f4
+
+	column district
+		dataType: string
+		lineageTag: b4ff2e1c-ffce-44ef-b2af-547297c745cd
+		summarizeBy: none
+		sourceColumn: district
+
+		annotation SummarizationSetBy = Automatic
+
+	column crop_year
+		dataType: int64
+		formatString: 0
+		lineageTag: b5171aa4-1d47-4070-8ef1-a433cfba721a
+		summarizeBy: sum
+		sourceColumn: crop_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column actual_yield_kg_ha
+		dataType: double
+		lineageTag: 611c485a-f962-43f3-acd8-adc756b60c80
+		summarizeBy: sum
+		sourceColumn: actual_yield_kg_ha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column forecast_yield_kg_ha
+		dataType: double
+		lineageTag: 7e9f4ca2-2716-49b6-83b0-de039244511b
+		summarizeBy: sum
+		sourceColumn: forecast_yield_kg_ha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column lower_kg_ha
+		dataType: double
+		lineageTag: 9c030eb5-84c0-46e8-b045-6242fda81802
+		summarizeBy: sum
+		sourceColumn: lower_kg_ha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column upper_kg_ha
+		dataType: double
+		lineageTag: 0790ad37-7389-4626-a94d-c28439704fcf
+		summarizeBy: sum
+		sourceColumn: upper_kg_ha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column forecast_status
+		dataType: string
+		lineageTag: 98b733d5-2b69-4f1a-bee1-eb6be563e46c
+		summarizeBy: none
+		sourceColumn: forecast_status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition district_forecasts = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(CsvFolder & "\district_forecasts.csv"),[Delimiter=",", Columns=7, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"district", type text}, {"crop_year", Int64.Type}, {"actual_yield_kg_ha", type number}, {"forecast_yield_kg_ha", type number}, {"lower_kg_ha", type number}, {"upper_kg_ha", type number}, {"forecast_status", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

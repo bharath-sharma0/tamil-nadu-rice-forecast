@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "name": "4d0b720e6b735551595d",
+  "position": {
+    "x": 678,
+    "y": 378,
+    "z": 4,
+    "height": 254,
+    "width": 1242,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "district_forecasts"
+                    }
+                  },
+                  "Property": "Procurement Action"
+                }
+              },
+              "queryRef": "district_forecasts.Procurement Action",
+              "nativeQueryRef": "Procurement Action"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "b3906e205c976e8c9f9f",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "district_forecasts"
+              }
+            },
+            "Property": "Procurement Action"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

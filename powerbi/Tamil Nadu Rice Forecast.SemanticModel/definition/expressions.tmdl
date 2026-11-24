@@ -1,0 +1,1 @@
+expression CsvFolder = "C:\PowerBI\csv" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]

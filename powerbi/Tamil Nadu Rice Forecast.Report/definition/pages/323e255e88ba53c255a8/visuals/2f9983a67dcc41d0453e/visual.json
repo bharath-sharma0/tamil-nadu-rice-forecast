@@ -1,0 +1,107 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "name": "2f9983a67dcc41d0453e",
+  "position": {
+    "x": 878,
+    "y": 0,
+    "z": 5,
+    "height": 378,
+    "width": 1042,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "district_history"
+                    }
+                  },
+                  "Property": "crop_year"
+                }
+              },
+              "queryRef": "district_history.crop_year",
+              "nativeQueryRef": "crop_year",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Districts"
+                    }
+                  },
+                  "Property": "Eligible Historical Yield (kg/ha)"
+                }
+              },
+              "queryRef": "Districts.Eligible Historical Yield (kg/ha)",
+              "nativeQueryRef": "Eligible Historical Yield (kg/ha)"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Districts"
+                  }
+                },
+                "Property": "Eligible Historical Yield (kg/ha)"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "847f023391943c050ead",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "district_history"
+              }
+            },
+            "Property": "crop_year"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "87a51e15cf57733653e7",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Districts"
+              }
+            },
+            "Property": "Eligible Historical Yield (kg/ha)"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

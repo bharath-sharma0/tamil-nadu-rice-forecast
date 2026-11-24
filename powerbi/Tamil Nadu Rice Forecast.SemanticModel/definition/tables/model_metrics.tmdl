@@ -1,0 +1,126 @@
+table model_metrics
+	lineageTag: d4abb374-ccbe-4088-8b42-069a3b2da0a7
+
+	column group
+		dataType: string
+		lineageTag: dfb82a4c-8e00-405b-9907-93d5de97b07d
+		summarizeBy: none
+		sourceColumn: group
+
+		annotation SummarizationSetBy = Automatic
+
+	column method
+		dataType: string
+		lineageTag: e56ec89a-fc72-4d94-8d15-557035bd42b0
+		summarizeBy: none
+		sourceColumn: method
+
+		annotation SummarizationSetBy = Automatic
+
+	column observed_rows
+		dataType: int64
+		formatString: 0
+		lineageTag: 18d3fdb9-ae4a-4dc2-a113-f83d6e704c1e
+		summarizeBy: sum
+		sourceColumn: observed_rows
+
+		annotation SummarizationSetBy = Automatic
+
+	column forecast_rows
+		dataType: int64
+		formatString: 0
+		lineageTag: c4b8b482-308c-452c-af4d-26a9eba65c77
+		summarizeBy: sum
+		sourceColumn: forecast_rows
+
+		annotation SummarizationSetBy = Automatic
+
+	column shared_rows
+		dataType: int64
+		formatString: 0
+		lineageTag: 833db57b-3b80-4170-9c82-df84007abb6a
+		summarizeBy: sum
+		sourceColumn: shared_rows
+
+		annotation SummarizationSetBy = Automatic
+
+	column scored_years
+		dataType: int64
+		formatString: 0
+		lineageTag: c393a775-31e9-402c-b93b-3f1842e7cad2
+		summarizeBy: sum
+		sourceColumn: scored_years
+
+		annotation SummarizationSetBy = Automatic
+
+	column mae_kg_per_ha
+		dataType: double
+		lineageTag: ea1af324-6317-45c5-95db-8710b40391b5
+		summarizeBy: sum
+		sourceColumn: mae_kg_per_ha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column mae_ci_95_lower
+		dataType: double
+		lineageTag: 2e97e57a-ba64-4db2-850f-96c94f1409d2
+		summarizeBy: sum
+		sourceColumn: mae_ci_95_lower
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column mae_ci_95_upper
+		dataType: double
+		lineageTag: e997efc1-772e-423d-9421-99b7a59a6d35
+		summarizeBy: sum
+		sourceColumn: mae_ci_95_upper
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column rmse_kg_per_ha
+		dataType: double
+		lineageTag: 61ef6b36-26e7-45d0-b7b2-d378d9d46807
+		summarizeBy: sum
+		sourceColumn: rmse_kg_per_ha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column mape_percent
+		dataType: double
+		lineageTag: 49b6a38e-5e31-4171-9f61-7b980cec0cb2
+		summarizeBy: sum
+		sourceColumn: mape_percent
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column mape_rows
+		dataType: int64
+		formatString: 0
+		lineageTag: 50be865b-ceed-4bbb-ba72-ae7406d65cc5
+		summarizeBy: sum
+		sourceColumn: mape_rows
+
+		annotation SummarizationSetBy = Automatic
+
+	partition model_metrics = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(CsvFolder & "\model_metrics.csv"),[Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"group", type text}, {"method", type text}, {"observed_rows", Int64.Type}, {"forecast_rows", Int64.Type}, {"shared_rows", Int64.Type}, {"scored_years", Int64.Type}, {"mae_kg_per_ha", type number}, {"mae_ci_95_lower", type number}, {"mae_ci_95_upper", type number}, {"rmse_kg_per_ha", type number}, {"mape_percent", type number}, {"mape_rows", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

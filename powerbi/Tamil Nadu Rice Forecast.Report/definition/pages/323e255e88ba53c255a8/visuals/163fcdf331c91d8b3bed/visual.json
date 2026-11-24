@@ -1,0 +1,90 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "name": "163fcdf331c91d8b3bed",
+  "position": {
+    "x": 878,
+    "y": 632,
+    "z": 6,
+    "height": 448,
+    "width": 1042,
+    "tabOrder": 6
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "district_history"
+                    }
+                  },
+                  "Property": "crop_year"
+                }
+              },
+              "queryRef": "district_history.crop_year",
+              "nativeQueryRef": "crop_year",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Districts"
+                    }
+                  },
+                  "Property": "Forecast Input Yield (kg/ha)"
+                }
+              },
+              "queryRef": "Districts.Forecast Input Yield (kg/ha)",
+              "nativeQueryRef": "Forecast Input Yield (kg/ha)"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Districts"
+                  }
+                },
+                "Property": "Forecast Input Yield (kg/ha)"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "name": "21142e5871d126d66c54",
+  "position": {
+    "x": 10,
+    "y": 366,
+    "z": 2,
+    "height": 328,
+    "width": 340,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "district_forecasts"
+                    }
+                  },
+                  "Property": "Forecast Yield (kg/ha)"
+                }
+              },
+              "queryRef": "district_forecasts.Forecast Yield (kg/ha)",
+              "nativeQueryRef": "Forecast Yield (kg/ha)"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

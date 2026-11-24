@@ -1,0 +1,8 @@
+relationship 5ece2c82-eff0-d1c5-9495-0dd7df4355de
+	fromColumn: district_forecasts.district
+	toColumn: Districts.district
+
+relationship d95bfb29-6870-fc87-5b0d-931ae5263dc0
+	fromColumn: district_history.district
+	toColumn: Districts.district
+

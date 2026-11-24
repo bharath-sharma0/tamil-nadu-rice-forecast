@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Tamil Nadu Rice Forecast"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "6bd71424-79b3-4366-8d20-349c9d970180"
+  }
+}

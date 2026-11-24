@@ -1,0 +1,50 @@
+table Districts
+	lineageTag: 9018375c-c28d-4425-8629-065c14c8b6c3
+
+	measure 'Eligible Historical Yield (kg/ha)' =
+			
+			VAR ForecastYear = SELECTEDVALUE(district_forecasts[crop_year])
+			VAR HistoryYear = SELECTEDVALUE(district_history[crop_year])
+			RETURN
+			    IF(
+			        HASONEVALUE(Districts[district]) &&
+			        NOT ISBLANK(ForecastYear) &&
+			        NOT ISBLANK(HistoryYear) &&
+			        HistoryYear <= ForecastYear - 2,
+			        SELECTEDVALUE(district_history[observed_yield_kg_ha])
+			    )
+		lineageTag: 7d61ea34-de77-4291-b05c-3290cabaf98c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Forecast Input Yield (kg/ha)' =
+			
+			VAR ForecastYear = SELECTEDVALUE(district_forecasts[crop_year])
+			VAR HistoryYear = SELECTEDVALUE(district_history[crop_year])
+			RETURN
+			    IF(
+			        HASONEVALUE(Districts[district]) &&
+			        NOT ISBLANK(ForecastYear) &&
+			        NOT ISBLANK(HistoryYear) &&
+			        HistoryYear >= ForecastYear - 4 &&
+			        HistoryYear <= ForecastYear - 2,
+			        SELECTEDVALUE(district_history[observed_yield_kg_ha])
+			    )
+		lineageTag: a1878111-8f53-4979-95fb-58f3857dc978
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column district
+		lineageTag: c0214e6f-33a7-476a-9585-69574efaa814
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: district_forecasts[district]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Districts = calculated
+		mode: import
+		source = DISTINCT(district_forecasts[district])
+
+	annotation PBI_Id = a7b488529d8a40dd830258af334a5090
+

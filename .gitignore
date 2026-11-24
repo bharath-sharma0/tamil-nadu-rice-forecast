@@ -5,3 +5,7 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 *.sqlite
+
+# Power BI Desktop caches and imported report copies
+powerbi/**/.pbi/
+powerbi/**/*.pbix
