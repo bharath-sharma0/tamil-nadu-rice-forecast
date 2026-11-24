@@ -21,16 +21,9 @@ MAE is the average absolute forecast error. Both scores use the same 93 observed
 - Compares two baselines, exponential smoothing, and two LightGBM variants using expanding training windows. The weather ablation compares LightGBM with and without weather on identical rows.
 - Shows the forecast range, the three source seasons, and a procurement action in Streamlit. When eligible history is incomplete, the app asks for a current district estimate before setting a volume target.
 
-## Demo
+## Dashboard
 
-The dashboard runs locally. The [60-second recording script](reports/recorded_demo_script.md) walks through the model comparison and the insufficient-history case.
-
-| Screenshot slot | What to capture |
-|---|---|
-| Held-out model comparison | Five methods with MAE, confidence intervals, and forecast coverage |
-| Insufficient-history state | Chengalpattu, 2020–21, with the procurement action visible |
-
-<!-- Add screenshots under docs/images/ and replace the corresponding descriptions with Markdown image links. -->
+Run the Streamlit app using the [Windows quick start](#quick-start-on-windows). The dashboard shows forecast intervals, eligible yield history, and the held-out model comparison. You can review the [evaluation summary](reports/final_test_summary.md) directly on GitHub.
 
 ## Architecture
 
@@ -50,7 +43,7 @@ flowchart LR
 | `src/` | Input downloads, database rebuild, forecasting, and scoring |
 | `app/` | Streamlit procurement dashboard |
 | `tests/` | Metric, data-quality, and dashboard tests |
-| `reports/` | Frozen evaluation plan, measured results, and demo script |
+| `reports/` | Frozen evaluation plan and measured results |
 
 ## Tech stack
 
